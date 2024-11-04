@@ -1,0 +1,8 @@
+Install and Run, view the Get Request: http://localhost:8222/
+	docker run -d --name nats-server -p 4222:4222 -p 8222:8222 nats
+Links
+	https://hub.docker.com/_/nats
+	https://nats.io/
+
+- Ver video 3 de la seccion 9 aqui unificamos todos los microservices en una sola terminal, por favor ver este y de ser necesario toda la seccion
+comando para ejecutar el docker de todo unido docker compose up --build en la carpeta en donde estan alojados todos lo microservicios
