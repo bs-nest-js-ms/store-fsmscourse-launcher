@@ -29,5 +29,6 @@ Si se hace al revés, se perderán las referencias de los sub-módulos en el rep
 
 # Microservice App Store Steps
 - Clone the repositories
+- Run command ```git submodule update --init --recursive``` for rebuild the submodules
 - Create .env file with .env.template and set all variables
 - Run project with: ```docker compose up --build```
