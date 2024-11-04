@@ -16,38 +16,38 @@ services:
       - PORT=${CLIENT_GATEWAY_PORT}
       - NATS_SERVERS=nats://nats-server:4222 # Ya no es localhost es nats-server el dns
   
-  # products-ms:
-  #   build: ./products-ms
-  #   volumes: 
-  #     - ./products-ms/src:/usr/src/app/src # Para el hot reload del backend
-  #   command: npm run start:dev
-  #   ports:
-  #     - ${PRODUCTS_REST_API_PORT}:${PRODUCTS_REST_API_PORT}
-  #   environment:
-  #     - PORT=${PRODUCTS_MICROSERVICE_PORT}
-  #     - NATS_SERVERS=nats://nats-server:4222 # Ya no es localhost es nats-server el dns
+  products-ms:
+    build: ./products-ms
+    volumes: 
+      - ./products-ms/src:/usr/src/app/src # Para el hot reload del backend
+    command: npm run start:dev
+    ports:
+      - ${PRODUCTS_REST_API_PORT}:${PRODUCTS_REST_API_PORT}
+    environment:
+      - PORT=${PRODUCTS_MICROSERVICE_PORT}
+      - NATS_SERVERS=nats://nats-server:4222 # Ya no es localhost es nats-server el dns
 
-  # orders-ms:
-  #   build: ./orders-ms
-  #   depends_on:
-  #     - orders-db
-  #   volumes: 
-  #     - ./orders-ms/src:/usr/src/app/src # Para el hot reload del backend
-  #   command: npm run start:dev
-  #   environment:
-  #     - PORT=${ORDERS_MICROSERVICE_PORT}
-  #     - NATS_SERVERS=nats://nats-server:4222 # Ya no es localhost es nats-server el dns
+  orders-ms:
+    build: ./orders-ms
+    depends_on:
+      - orders-db
+    volumes: 
+      - ./orders-ms/src:/usr/src/app/src # Para el hot reload del backend
+    command: npm run start:dev
+    environment:
+      - PORT=${ORDERS_MICROSERVICE_PORT}
+      - NATS_SERVERS=nats://nats-server:4222 # Ya no es localhost es nats-server el dns
 
-  # orders-db:
-  #   container_name: orders-db
-  #   image: postgres:16.3
-  #   restart: always
-  #   volumes:
-  #     - ./orders-ms/postgres:/var/lib/postgresql/data
-  #   ports:
-  #     - 5432:5432
-  #   environment:
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=asd.456
-  #     - POSTGRES_DB=orders_db
-  #     - NATS_SERVERS=nats://nats-server:4222 # Ya no es localhost es nats-server el dns
+  orders-db:
+    container_name: orders-db
+    image: postgres:16.3
+    restart: always
+    volumes:
+      - ./orders-ms/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=asd.456
+      - POSTGRES_DB=orders_db
+      - NATS_SERVERS=nats://nats-server:4222 # Ya no es localhost es nats-server el dns
