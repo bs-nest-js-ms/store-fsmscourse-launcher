@@ -5,6 +5,9 @@ services:
     ports:
       - 8222:8222 # Este es el unico servicio para ver que microservicios estan conectados
   
+  #=======================================================
+  #                 GATEWAY
+  #======================================================
   client-gateway: # API GATEWAY PRIMERO
     build: ./client_gateway
     ports:
@@ -16,6 +19,9 @@ services:
       - PORT=${CLIENT_GATEWAY_PORT}
       - NATS_SERVERS=nats://nats-server:4222 # Ya no es localhost es nats-server el dns
   
+  #=======================================================
+  #                 PRODUCTS MICROSERVICE
+  #======================================================
   products-ms:
     build: ./products-ms
     volumes: 
@@ -27,6 +33,9 @@ services:
       - PORT=${PRODUCTS_MICROSERVICE_PORT}
       - NATS_SERVERS=nats://nats-server:4222 # Ya no es localhost es nats-server el dns
 
+  #=======================================================
+  #                 ORDERS MICROSERVICE
+  #======================================================
   orders-ms:
     build: ./orders-ms
     depends_on:
@@ -38,6 +47,22 @@ services:
       - PORT=${ORDERS_MICROSERVICE_PORT}
       - NATS_SERVERS=nats://nats-server:4222 # Ya no es localhost es nats-server el dns
 
+  #=======================================================
+  #                 PARYMENTS MICROSERVICE
+  #======================================================
+  payments-ms:
+    build: ./payments-ms
+    volumes:
+      - ./payments-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    ports:
+      - ${PAYMENTS_MICROSERVICE_PORT}:${PAYMENTS_MICROSERVICE_PORT}
+    environment:
+      - NATS_SERVERS=nats://nats-server:4222
+
+  #=======================================================
+  #                 DATABASES
+  #======================================================
   orders-db:
     container_name: orders-db
     image: postgres:16.3
