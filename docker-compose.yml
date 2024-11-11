@@ -1,5 +1,7 @@
 services:
-  
+  #=======================================================
+  #                 NATS SERVICE
+  #=======================================================
   nats-server:
     image: nats:latest
     ports:
@@ -7,7 +9,7 @@ services:
   
   #=======================================================
   #                 GATEWAY
-  #======================================================
+  #=======================================================
   client-gateway: # API GATEWAY PRIMERO
     build: ./client_gateway
     ports:
@@ -21,7 +23,7 @@ services:
   
   #=======================================================
   #                 PRODUCTS MICROSERVICE
-  #======================================================
+  #=======================================================
   products-ms:
     build: ./products-ms
     volumes: 
@@ -35,7 +37,7 @@ services:
 
   #=======================================================
   #                 ORDERS MICROSERVICE
-  #======================================================
+  #=======================================================
   orders-ms:
     build: ./orders-ms
     depends_on:
@@ -61,8 +63,23 @@ services:
       - NATS_SERVERS=nats://nats-server:4222
 
   #=======================================================
+  #                 AUTH MICROSERVICE
+  #=======================================================
+  auth-ms:
+    build: ./auth-ms
+    volumes:
+      - ./auth-ms/src:/usr/src/app/src
+    command: npm run start:dev
+    ports:
+      - ${AUTH_MICROSERVICE_PORT}:${AUTH_MICROSERVICE_PORT}
+    environment:
+      - NATS_SERVERS=nats://nats-server:4222
+      - MONGO_URI=${MONGO_URI}
+      - SECRET=${SECRET}
+
+  #=======================================================
   #                 DATABASES
-  #======================================================
+  #=======================================================
   orders-db:
     container_name: orders-db
     image: postgres:16.3
